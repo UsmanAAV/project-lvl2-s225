@@ -1,0 +1,9 @@
+import genDiff from '../src';
+
+const fs = require('fs');
+
+test('genDiff', () => {
+  const expected = fs.readFileSync('./__tests__/__fixtures__/expected.txt', 'utf8');
+  expect(genDiff('./__tests__/__fixtures__/before.json', './__tests__/__fixtures__/after.json'))
+    .toBe(expected);
+});
