@@ -29,7 +29,10 @@
   "dependencies": {
     "commander": "*",
     "fs": "*",
-    "lodash": "*"
+    "lodash": "*",
+    "js-yaml": "*",
+    "ini": "*",
+    "path": "*"
   },
   "devDependencies": {
     "babel-cli": "*",
@@ -45,7 +48,6 @@
     "eslint-plugin-import": "*",
     "eslint-plugin-jest": "*",
     "jest": "*",
-    "jest-cli": "*",
-    "js-yaml": "*"
+    "jest-cli": "*"
   }
 }
