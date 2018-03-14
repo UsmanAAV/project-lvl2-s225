@@ -1,5 +1,4 @@
 import fs from 'fs';
-import _ from 'lodash/fp';
 
 const genDiff = (pathToBefore, pathToAfter) => {
   const beforeFile = fs.readFileSync(pathToBefore);
@@ -7,47 +6,29 @@ const genDiff = (pathToBefore, pathToAfter) => {
   const beforeJSON = JSON.parse(beforeFile);
   const afterJSON = JSON.parse(afterFile);
 
-  const reduce = _.reduce.convert({ cap: false });
+  const objKeys = Object.keys(beforeJSON).concat(Object.keys(afterJSON));
+  const keys = Array.from(new Set(objKeys));
 
-  const notChanged = reduce(
-    (arr, value, key) => {
-      if (key in afterJSON && value === afterJSON[key]) {
-        return arr.concat(`    ${key}: ${beforeJSON[key]}`);
+  const resultArray = keys.reduce(
+    (acc, key) => {
+      if (beforeJSON[key] === afterJSON[key]) {
+        return acc.concat(`    ${key}: ${beforeJSON[key]}`);
       }
-      return arr;
+      if (key in beforeJSON && key in afterJSON && beforeJSON[key] !== afterJSON[key]) {
+        return acc.concat(`  + ${key}: ${afterJSON[key]}`).concat(`  - ${key}: ${beforeJSON[key]}`);
+      }
+      if (key in beforeJSON && !(key in afterJSON)) {
+        return acc.concat(`  - ${key}: ${beforeJSON[key]}`);
+      }
+      if (!(key in beforeJSON) && key in afterJSON) {
+        return acc.concat(`  + ${key}: ${afterJSON[key]}`);
+      }
+      return acc;
     },
     [],
-  )(beforeJSON);
+  );
+  const result = `{\n${resultArray.join('\n')}\n}`;
 
-  const changed = reduce(
-    (arr, value, key) => {
-      if (key in afterJSON && value !== afterJSON[key]) {
-        return arr.concat(`  + ${key}: ${afterJSON[key]}`).concat(`  - ${key}: ${beforeJSON[key]}`);
-      }
-      return arr;
-    },
-    notChanged,
-  )(beforeJSON);
-
-  const deleted = reduce(
-    (arr, value, key) => {
-      if (!(key in afterJSON)) return arr.concat(`  - ${key}: ${beforeJSON[key]}`);
-      return arr;
-    },
-    changed,
-  )(beforeJSON);
-
-  const added = reduce(
-    (arr, value, key) => {
-      if (!(key in beforeJSON)) {
-        return arr.concat(`  + ${key}: ${value}`);
-      }
-      return arr;
-    },
-    deleted,
-  )(afterJSON);
-
-  const result = `{\n${added.join('\n')}\n}`;
   return result;
 };
 
