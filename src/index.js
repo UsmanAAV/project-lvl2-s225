@@ -1,13 +1,13 @@
-import { readFileSync } from 'fs';
-import { reduce as cappedReduce } from 'lodash/fp';
+import fs from 'fs';
+import _ from 'lodash/fp';
 
 const genDiff = (pathToBefore, pathToAfter) => {
-  const beforeFile = readFileSync(pathToBefore);
-  const afterFile = readFileSync(pathToAfter);
+  const beforeFile = fs.readFileSync(pathToBefore);
+  const afterFile = fs.readFileSync(pathToAfter);
   const beforeJSON = JSON.parse(beforeFile);
   const afterJSON = JSON.parse(afterFile);
 
-  const reduce = cappedReduce.convert({ cap: false });
+  const reduce = _.reduce.convert({ cap: false });
 
   const notChanged = reduce(
     (arr, value, key) => {
@@ -47,7 +47,8 @@ const genDiff = (pathToBefore, pathToAfter) => {
     deleted,
   )(afterJSON);
 
-  return `{\n${added.join('\n')}\n}`;
+  const result = `{\n${added.join('\n')}\n}`;
+  return result;
 };
 
 export default genDiff;
