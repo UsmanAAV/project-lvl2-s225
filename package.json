@@ -28,7 +28,8 @@
   "homepage": "https://github.com/UsmanAAV/project-lvl2-s225#readme",
   "dependencies": {
     "commander": "*",
-    "fs": "*"
+    "fs": "*",
+    "lodash": "*"
   },
   "devDependencies": {
     "babel-cli": "*",
