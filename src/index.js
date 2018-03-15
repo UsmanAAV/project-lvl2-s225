@@ -4,7 +4,7 @@ import getParser from './parsers';
 
 const convertFileToObject = (pathToFile) => {
   const ext = path.extname(pathToFile);
-  const data = fs.readFileSync(pathToFile);
+  const data = fs.readFileSync(pathToFile, 'utf8');
   const parser = getParser(ext);
   return parser.parse(data);
 };
