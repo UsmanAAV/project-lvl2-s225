@@ -19,3 +19,21 @@ test('genDiff-ini', () => {
   expect(genDiff('./__tests__/__fixtures__/before.ini', './__tests__/__fixtures__/after.ini'))
     .toBe(expected);
 });
+
+test('genDiff-json-recursive', () => {
+  const expected = fs.readFileSync('./__tests__/__fixtures__/expected-recursive.txt', 'utf8');
+  expect(genDiff('./__tests__/__fixtures__/before-recursive.json', './__tests__/__fixtures__/after-recursive.json'))
+    .toBe(expected);
+});
+
+test('genDiff-yaml-recursive', () => {
+  const expected = fs.readFileSync('./__tests__/__fixtures__/expected-recursive.txt', 'utf8');
+  expect(genDiff('./__tests__/__fixtures__/before-recursive.yml', './__tests__/__fixtures__/after-recursive.yaml'))
+    .toBe(expected);
+});
+
+test('genDiff-ini-recursive', () => {
+  const expected = fs.readFileSync('./__tests__/__fixtures__/expected-recursive.txt', 'utf8');
+  expect(genDiff('./__tests__/__fixtures__/before-recursive.ini', './__tests__/__fixtures__/after-recursive.ini'))
+    .toBe(expected);
+});
