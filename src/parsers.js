@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import ini from 'ini';
 import { safeLoad, safeDump } from 'js-yaml';
 
@@ -22,10 +24,17 @@ const parsers = {
   '.ini': iniParser,
 };
 
-export default (format) => {
+const getParser = (format = '') => {
   const parser = parsers[format];
   if (!parser) {
     throw new Error(`unknown format: ${format}`);
   }
   return parser;
+};
+
+export default (pathToFile) => {
+  const ext = path.extname(pathToFile);
+  const data = fs.readFileSync(pathToFile, 'utf8');
+  const parser = getParser(ext);
+  return parser.parse(data);
 };

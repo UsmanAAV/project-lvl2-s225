@@ -1,22 +1,14 @@
-import fs from 'fs';
-import path from 'path';
 import fp from 'lodash/fp';
-import getParser from './parsers';
+import extractDataToObject from './parsers';
+import render from './renderers';
 
 const ADDED = '+ ';
 const DELETED = '- ';
 const UNCHANGED = '  ';
 
-export const convertFileToObject = (pathToFile) => {
-  const ext = path.extname(pathToFile);
-  const data = fs.readFileSync(pathToFile, 'utf8');
-  const parser = getParser(ext);
-  return parser.parse(data);
-};
-
-const makeObj = (keyName, state, value) => ({ keyName, state, value });
-
 export const getAST = (objBefore, objAfter) => {
+  const makeObj = (keyName, state, value) => ({ keyName, state, value });
+
   const keys = Object.keys(objBefore)
     .concat(Object.keys(objAfter))
     .reduce((obj, key) => ({ ...obj, [key]: key }), {});
@@ -49,30 +41,11 @@ export const getAST = (objBefore, objAfter) => {
   return result;
 };
 
-const render = (ast, indent = '') => {
-  const printValue = (value) => {
-    if (value instanceof Object) {
-      const res = Object.keys(value).map(key => `        ${indent}${key}: ${value[key]}`, []).join(', ');
-      return `{\n${res}\n    ${indent}}`;
-    }
-    return value;
-  };
-  const result =
-    ast
-      .map(elem =>
-        `${indent}  ${elem.state}${elem.keyName}: ${(elem.value instanceof Array) ? render(elem.value, `${indent}    `) : printValue(elem.value)}`)
-      .join('\n');
-  return `{\n${result}\n${indent}}`;
-};
+const genDiff = (pathToBefore, pathToAfter, format = 'json') => {
+  const beforeConfig = extractDataToObject(pathToBefore);
+  const afterConfig = extractDataToObject(pathToAfter);
 
-const genDiff = (pathToBefore, pathToAfter) => {
-  const beforeConfig = convertFileToObject(pathToBefore);
-  const afterConfig = convertFileToObject(pathToAfter);
-
-  console.dir(pathToBefore, ' \n', beforeConfig);
-  console.dir(pathToAfter, ' \n', afterConfig);
-
-  const result = render(getAST(beforeConfig, afterConfig));
+  const result = render(format)(getAST(beforeConfig, afterConfig));
 
   return result;
 };

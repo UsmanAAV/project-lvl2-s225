@@ -8,6 +8,6 @@ program
   .option('-f, --format [type]', 'Output format')
   .description('Compares two configuration files and shows a difference.')
   .action((firstConfig, seconfConfig) => {
-    console.log(genDiff(firstConfig, seconfConfig));
+    console.log(genDiff(firstConfig, seconfConfig, program.format));
   })
   .parse(process.argv);
