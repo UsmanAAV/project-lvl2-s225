@@ -41,10 +41,10 @@ test('render-plain', () => {
   expect(render('plain')(extractDataToObject('./__tests__/__fixtures__/exp-ast.json')))
     .toBe(expected);
 });
-/*
+
 test('render-json', () => {
   const expected = fs.readFileSync('./__tests__/__fixtures__/exp-render-json.json', 'utf8');
   expect(render('json')(extractDataToObject('./__tests__/__fixtures__/exp-ast.json')))
     .toBe(expected);
 });
-*/
+

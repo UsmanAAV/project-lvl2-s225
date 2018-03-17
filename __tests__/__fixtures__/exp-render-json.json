@@ -12,7 +12,7 @@
 	}, {
 		"keyName": "setting3",
 		"type": "updated",
-		"oldValue": true,
+		"oldValue": "true",
 		"newValue": {
 			"key": "value"
 		}
