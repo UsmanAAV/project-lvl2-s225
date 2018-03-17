@@ -4,10 +4,10 @@ import genDiff from '../';
 
 program
   .version('0.0.1')
-  .arguments('<firstConfig> <seconfConfig>')
+  .arguments('<firstConfig> <secondConfig>')
   .option('-f, --format [type]', 'Output format')
   .description('Compares two configuration files and shows a difference.')
-  .action((firstConfig, seconfConfig) => {
-    console.log(genDiff(firstConfig, seconfConfig, program.format));
+  .action((firstConfig, secondConfig) => {
+    console.log(genDiff(firstConfig, secondConfig, program.format));
   })
   .parse(process.argv);
