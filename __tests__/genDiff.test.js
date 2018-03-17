@@ -1,57 +1,50 @@
-import genDiff from '../src';
+import { makeAST } from '../src';
+import extractDataToObject from '../src/parsers';
+import render from '../src/renderers';
 
 const fs = require('fs');
 
-test('genDiff-json', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/expected.txt', 'utf8');
-  expect(genDiff('./__tests__/__fixtures__/before.json', './__tests__/__fixtures__/after.json'))
+test('parse-before-json', () => {
+  const expected = JSON.stringify(JSON.parse(fs.readFileSync('./__tests__/__fixtures__/exp-parse-before.json', 'utf8')));
+  expect(JSON.stringify(extractDataToObject('./__tests__/__fixtures__/before.json')))
     .toBe(expected);
 });
 
-test('genDiff-yaml', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/expected.txt', 'utf8');
-  expect(genDiff('./__tests__/__fixtures__/before.yml', './__tests__/__fixtures__/after.yaml'))
+test('parse-before-yaml', () => {
+  const expected = JSON.stringify(JSON.parse(fs.readFileSync('./__tests__/__fixtures__/exp-parse-before.json', 'utf8')));
+  expect(JSON.stringify(extractDataToObject('./__tests__/__fixtures__/before.yml')))
     .toBe(expected);
 });
 
-test('genDiff-ini', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/expected.txt', 'utf8');
-  expect(genDiff('./__tests__/__fixtures__/before.ini', './__tests__/__fixtures__/after.ini'))
+test('parse-before-ini', () => {
+  const expected = JSON.stringify(JSON.parse(fs.readFileSync('./__tests__/__fixtures__/exp-parse-before.json', 'utf8')));
+  expect(JSON.stringify(extractDataToObject('./__tests__/__fixtures__/before.ini')))
     .toBe(expected);
 });
 
-test('genDiff-json-recursive', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/expected-recursive.txt', 'utf8');
-  expect(genDiff('./__tests__/__fixtures__/before-recursive.json', './__tests__/__fixtures__/after-recursive.json'))
+test('makeAST', () => {
+  const expected = JSON.stringify(JSON.parse(fs.readFileSync('./__tests__/__fixtures__/exp-ast.json', 'utf8')));
+  const oldObj = extractDataToObject('./__tests__/__fixtures__/before.ini');
+  const newObj = extractDataToObject('./__tests__/__fixtures__/after.ini');
+  expect(JSON.stringify(makeAST(oldObj, newObj)))
     .toBe(expected);
 });
 
-test('genDiff-yaml-recursive', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/expected-recursive.txt', 'utf8');
-  expect(genDiff('./__tests__/__fixtures__/before-recursive.yml', './__tests__/__fixtures__/after-recursive.yaml'))
+test('render-default', () => {
+  const expected = fs.readFileSync('./__tests__/__fixtures__/exp-render-default.txt', 'utf8');
+  expect(render()(extractDataToObject('./__tests__/__fixtures__/exp-ast.json')))
     .toBe(expected);
 });
 
-test('genDiff-ini-recursive', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/expected-recursive.txt', 'utf8');
-  expect(genDiff('./__tests__/__fixtures__/before-recursive.ini', './__tests__/__fixtures__/after-recursive.ini'))
+test('render-plain', () => {
+  const expected = fs.readFileSync('./__tests__/__fixtures__/exp-render-plain.txt', 'utf8');
+  expect(render('plain')(extractDataToObject('./__tests__/__fixtures__/exp-ast.json')))
     .toBe(expected);
 });
-
-test('genDiff-json-recursive-plain', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/expected-recursive-plain.txt', 'utf8');
-  expect(genDiff('./__tests__/__fixtures__/before-recursive.json', './__tests__/__fixtures__/after-recursive.json', 'plain'))
+/*
+test('render-json', () => {
+  const expected = fs.readFileSync('./__tests__/__fixtures__/exp-render-json.json', 'utf8');
+  expect(render('json')(extractDataToObject('./__tests__/__fixtures__/exp-ast.json')))
     .toBe(expected);
 });
-
-test('genDiff-yaml-recursive-plain', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/expected-recursive-plain.txt', 'utf8');
-  expect(genDiff('./__tests__/__fixtures__/before-recursive.yml', './__tests__/__fixtures__/after-recursive.yaml', 'plain'))
-    .toBe(expected);
-});
-
-test('genDiff-ini-recursive-plain', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/expected-recursive-plain.txt', 'utf8');
-  expect(genDiff('./__tests__/__fixtures__/before-recursive.ini', './__tests__/__fixtures__/after-recursive.ini', 'plain'))
-    .toBe(expected);
-});
+*/

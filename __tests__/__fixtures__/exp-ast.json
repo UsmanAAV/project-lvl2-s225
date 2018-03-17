@@ -1,0 +1,89 @@
+[{
+		"keyName": "common",
+		"type": "nested",
+		"value": [{
+				"keyName": "setting1",
+				"type": "unchanged",
+				"value": "Value 1"
+			},
+			{
+				"keyName": "setting2",
+				"type": "deleted",
+				"value": "200"
+			},
+			{
+				"keyName": "setting3",
+				"type": "updated",
+				"oldValue": true,
+				"newValue": {
+					"key": "value"
+				}
+			},
+			{
+				"keyName": "setting6",
+				"type": "nested",
+				"value": [{
+						"keyName": "key",
+						"type": "unchanged",
+						"value": "value"
+					},
+					{
+						"keyName": "ops",
+						"type": "added",
+						"value": "vops"
+					}
+				]
+			},
+			{
+				"keyName": "setting4",
+				"type": "added",
+				"value": "blah blah"
+			},
+			{
+				"keyName": "setting5",
+				"type": "added",
+				"value": {
+					"key5": "value5"
+				}
+			}
+		]
+	},
+	{
+		"keyName": "group1",
+		"type": "nested",
+		"value": [{
+				"keyName": "baz",
+				"type": "updated",
+				"oldValue": "bas",
+				"newValue": "bars"
+			},
+			{
+				"keyName": "foo",
+				"type": "unchanged",
+				"value": "bar"
+			},
+			{
+				"keyName": "nest",
+				"type": "updated",
+				"oldValue": {
+					"key": "value"
+				},
+				"newValue": "str"
+			}
+		]
+	},
+	{
+		"keyName": "group2",
+		"type": "deleted",
+		"value": {
+			"abc": "12345"
+		}
+	},
+	{
+		"keyName": "group3",
+		"type": "added",
+		"value": {
+			"fee": "100500"
+		}
+	}
+]
