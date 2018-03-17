@@ -8,7 +8,7 @@ const UNCHANGED = 'unchanged';
 const UPDATED = 'updated';
 const NESTED = 'nested';
 
-export const getAST = (objBefore, objAfter) => {
+export const makeAST = (objBefore, objAfter) => {
   const makeObj = (keyName, type, value) => ({ keyName, type, value });
 
   const keys = fp.keys({ ...objBefore, ...objAfter });
@@ -19,7 +19,7 @@ export const getAST = (objBefore, objAfter) => {
       const newValue = objAfter[key];
 
       if (oldValue instanceof Object && newValue instanceof Object) {
-        return [...arr, makeObj(key, NESTED, getAST(oldValue, newValue))];
+        return [...arr, makeObj(key, NESTED, makeAST(oldValue, newValue))];
       }
       if (oldValue === newValue) {
         return [...arr, makeObj(key, UNCHANGED, oldValue)];
@@ -41,11 +41,13 @@ export const getAST = (objBefore, objAfter) => {
   return result;
 };
 
-const genDiff = (pathToBefore, pathToAfter, format = 'json') => {
-  const beforeConfig = extractDataToObject(pathToBefore);
-  const afterConfig = extractDataToObject(pathToAfter);
+const genDiff = (pathToOldConfig, pathToNewConfig, format) => {
+  const oldConfig = extractDataToObject(pathToOldConfig);
+  const newConfig = extractDataToObject(pathToNewConfig);
 
-  const ast = getAST(beforeConfig, afterConfig);
+  console.dir(JSON.stringify(oldConfig));
+
+  const ast = makeAST(oldConfig, newConfig);
   const result = render(format)(ast);
 
   return result;
