@@ -45,8 +45,6 @@ const genDiff = (pathToOldConfig, pathToNewConfig, format) => {
   const oldConfig = extractDataToObject(pathToOldConfig);
   const newConfig = extractDataToObject(pathToNewConfig);
 
-  console.dir(JSON.stringify(oldConfig));
-
   const ast = makeAST(oldConfig, newConfig);
   const result = render(format)(ast);
 
