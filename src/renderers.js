@@ -1,6 +1,6 @@
 import fp from 'lodash/fp';
 
-const renderJSON = (ast, depth = 0) => {
+const renderDefault = (ast, depth = 0) => {
   const makeIndent = count => `${'  '.repeat(count * 2)}`;
 
   const printValue = (value) => {
@@ -18,7 +18,7 @@ const renderJSON = (ast, depth = 0) => {
     deleted: elem => `${makeIndent(depth)}  - ${makeEnt(elem.keyName, elem.value)}`,
     unchanged: elem => `${makeIndent(depth)}    ${makeEnt(elem.keyName, elem.value)}`,
     updated: elem => `${makeIndent(depth)}  - ${makeEnt(elem.keyName, elem.oldValue)}\n${makeIndent(depth)}  + ${makeEnt(elem.keyName, elem.newValue)}`,
-    nested: elem => `${makeIndent(depth)}    ${elem.keyName}: ${renderJSON(elem.value, depth + 1)}`,
+    nested: elem => `${makeIndent(depth)}    ${elem.keyName}: ${renderDefault(elem.value, depth + 1)}`,
   };
 
   const result = ast.map(node => propertyActions[node.type](node))
@@ -54,8 +54,10 @@ const renderPlain = (ast, prefix = '') => {
   return result;
 };
 
+const renderJSON = ast => JSON.stringify(ast);
+
 export default (format) => {
   if (format === 'json') return renderJSON;
   if (format === 'plain') return renderPlain;
-  return () => 'unknown format';
+  return renderDefault;
 };
