@@ -1,50 +1,24 @@
-import { makeAST } from '../src';
-import extractDataToObject from '../src/parsers';
-import render from '../src/renderers';
+import fs from 'fs';
+import genDiff from '../src';
 
-const fs = require('fs');
+const beforeJson = './__tests__/__fixtures__/before.json';
+const beforeYaml = './__tests__/__fixtures__/before.yml';
+const beforeIni = './__tests__/__fixtures__/before.ini';
+const afterJson = './__tests__/__fixtures__/after.json';
+const afterYaml = './__tests__/__fixtures__/after.yaml';
+const afterIni = './__tests__/__fixtures__/after.ini';
+const expectedRenderDefault = fs.readFileSync('./__tests__/__fixtures__/exp-render-default.txt', 'utf8');
+const expectedRenderPlain = fs.readFileSync('./__tests__/__fixtures__/exp-render-plain.txt', 'utf8');
+const expectedRenderJson = fs.readFileSync('./__tests__/__fixtures__/exp-render-json.json', 'utf8');
 
-test('parse-before-json', () => {
-  const expected = JSON.stringify(JSON.parse(fs.readFileSync('./__tests__/__fixtures__/exp-parse-before.json', 'utf8')));
-  expect(JSON.stringify(extractDataToObject('./__tests__/__fixtures__/before.json')))
-    .toBe(expected);
+test('genDiff', () => {
+  expect(genDiff(beforeJson, afterJson)).toBe(expectedRenderDefault);
+  expect(genDiff(beforeJson, afterJson, 'plain')).toBe(expectedRenderPlain);
+  expect(genDiff(beforeJson, afterJson, 'json')).toBe(expectedRenderJson);
+  expect(genDiff(beforeYaml, afterYaml)).toBe(expectedRenderDefault);
+  expect(genDiff(beforeYaml, afterYaml, 'plain')).toBe(expectedRenderPlain);
+  expect(genDiff(beforeYaml, afterYaml, 'json')).toBe(expectedRenderJson);
+  expect(genDiff(beforeIni, afterIni)).toBe(expectedRenderDefault);
+  expect(genDiff(beforeIni, afterIni, 'plain')).toBe(expectedRenderPlain);
+  expect(genDiff(beforeIni, afterIni, 'json')).toBe(expectedRenderJson);
 });
-
-test('parse-before-yaml', () => {
-  const expected = JSON.stringify(JSON.parse(fs.readFileSync('./__tests__/__fixtures__/exp-parse-before.json', 'utf8')));
-  expect(JSON.stringify(extractDataToObject('./__tests__/__fixtures__/before.yml')))
-    .toBe(expected);
-});
-
-test('parse-before-ini', () => {
-  const expected = JSON.stringify(JSON.parse(fs.readFileSync('./__tests__/__fixtures__/exp-parse-before.json', 'utf8')));
-  expect(JSON.stringify(extractDataToObject('./__tests__/__fixtures__/before.ini')))
-    .toBe(expected);
-});
-
-test('makeAST', () => {
-  const expected = JSON.stringify(JSON.parse(fs.readFileSync('./__tests__/__fixtures__/exp-ast.json', 'utf8')));
-  const oldObj = extractDataToObject('./__tests__/__fixtures__/before.ini');
-  const newObj = extractDataToObject('./__tests__/__fixtures__/after.ini');
-  expect(JSON.stringify(makeAST(oldObj, newObj)))
-    .toBe(expected);
-});
-
-test('render-default', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/exp-render-default.txt', 'utf8');
-  expect(render()(extractDataToObject('./__tests__/__fixtures__/exp-ast.json')))
-    .toBe(expected);
-});
-
-test('render-plain', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/exp-render-plain.txt', 'utf8');
-  expect(render('plain')(extractDataToObject('./__tests__/__fixtures__/exp-ast.json')))
-    .toBe(expected);
-});
-
-test('render-json', () => {
-  const expected = fs.readFileSync('./__tests__/__fixtures__/exp-render-json.json', 'utf8');
-  expect(render('json')(extractDataToObject('./__tests__/__fixtures__/exp-ast.json')))
-    .toBe(expected);
-});
-
