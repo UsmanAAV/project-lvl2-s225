@@ -11,18 +11,10 @@ const renderPlain = (ast, prefix = '') => {
     added: elem => `Property '${prefix}${elem.keyName}' was added with ${printValue(elem.value, 'value: ')}`,
     deleted: elem => `Property '${prefix}${elem.keyName}' was deleted`,
     updated: elem => `Property '${prefix}${elem.keyName}' was updated. From ${printValue(elem.oldValue)} to ${printValue(elem.newValue)}`,
-    nested: elem => renderPlain(elem.value, `${elem.keyName}.`),
+    nested: elem => renderPlain(elem.value, `${prefix}${elem.keyName}.`),
   };
 
-  const fullPrefixedChildsAST = fp.map((node) => {
-    if (node.type === 'nested') {
-      return fp.map(child => ({ ...child, keyName: `${node.keyName}.${child.keyName}` }))(node.value);
-    }
-    return node;
-  })(ast);
-
-  const unnestedAST = fp.flatten(fullPrefixedChildsAST);
-  const astWithChangesOnly = fp.filter(node => node.type !== 'unchanged')(unnestedAST);
+  const astWithChangesOnly = fp.filter(node => node.type !== 'unchanged')(ast);
   const result = fp.map(node => propertyActions[node.type](node))(astWithChangesOnly)
     .join('\n');
   return result;
