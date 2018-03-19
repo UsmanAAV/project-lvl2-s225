@@ -43,15 +43,13 @@ export const makeAST = (objBefore, objAfter) => {
   return result;
 };
 
-export const fsReadFileSync = fs.readFileSync;
-
 const genDiff = (pathToOldConfig, pathToNewConfig, format = 'stylish') => {
   const oldExtension = path.extname(pathToOldConfig);
-  const oldText = fsReadFileSync(pathToOldConfig, 'utf8');
+  const oldText = fs.readFileSync(pathToOldConfig, 'utf8');
   const oldConfig = parse(oldExtension)(oldText);
 
   const newExtension = path.extname(pathToNewConfig);
-  const newText = fsReadFileSync(pathToNewConfig, 'utf8');
+  const newText = fs.readFileSync(pathToNewConfig, 'utf8');
   const newConfig = parse(newExtension)(newText);
 
   const ast = makeAST(oldConfig, newConfig);
