@@ -1,5 +1,5 @@
-import fs from 'fs';
 import genDiff from '../src';
+import getdata from '../src/getdata';
 
 const beforeJson = './__tests__/__fixtures__/before.json';
 const beforeYaml = './__tests__/__fixtures__/before.yml';
@@ -7,9 +7,9 @@ const beforeIni = './__tests__/__fixtures__/before.ini';
 const afterJson = './__tests__/__fixtures__/after.json';
 const afterYaml = './__tests__/__fixtures__/after.yaml';
 const afterIni = './__tests__/__fixtures__/after.ini';
-const expectedRenderDefault = fs.readFileSync('./__tests__/__fixtures__/exp-render-default.txt', 'utf8');
-const expectedRenderPlain = fs.readFileSync('./__tests__/__fixtures__/exp-render-plain.txt', 'utf8');
-const expectedRenderJson = fs.readFileSync('./__tests__/__fixtures__/exp-render-json.json', 'utf8');
+const expectedRenderDefault = getdata('./__tests__/__fixtures__/exp-render-default.txt');
+const expectedRenderPlain = getdata('./__tests__/__fixtures__/exp-render-plain.txt');
+const expectedRenderJson = getdata('./__tests__/__fixtures__/exp-render-json.json');
 
 test('genDiff', () => {
   expect(genDiff(beforeJson, afterJson)).toBe(expectedRenderDefault);

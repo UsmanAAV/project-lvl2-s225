@@ -1,7 +1,7 @@
-import fs from 'fs';
 import path from 'path';
 import ini from 'ini';
 import { safeLoad, safeDump } from 'js-yaml';
+import getdata from './getdata';
 
 const jsonParser = {
   parse: JSON.parse,
@@ -34,7 +34,6 @@ const getParser = (format = '') => {
 
 export default (pathToFile) => {
   const ext = path.extname(pathToFile);
-  const data = fs.readFileSync(pathToFile, 'utf8');
   const parser = getParser(ext);
-  return parser.parse(data);
+  return parser.parse(getdata(pathToFile));
 };
