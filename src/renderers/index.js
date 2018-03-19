@@ -1,6 +1,6 @@
-import renderJSON from './renderers/json';
-import renderDefault from './renderers/default';
-import renderPlain from './renderers/plain';
+import renderJSON from './json';
+import renderDefault from './default';
+import renderPlain from './plain';
 
 export default (format) => {
   if (format === 'json') return renderJSON;
