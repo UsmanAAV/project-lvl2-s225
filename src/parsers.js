@@ -1,7 +1,5 @@
-import path from 'path';
 import ini from 'ini';
 import { safeLoad, safeDump } from 'js-yaml';
-import getdata from './getdata';
 
 const jsonParser = {
   parse: JSON.parse,
@@ -32,8 +30,4 @@ const getParser = (format = '') => {
   return parser;
 };
 
-export default (pathToFile) => {
-  const ext = path.extname(pathToFile);
-  const parser = getParser(ext);
-  return parser.parse(getdata(pathToFile));
-};
+export default extension => getParser(extension).parse;
