@@ -1,3 +1,5 @@
+import fp from 'lodash/fp';
+
 const renderDefault = (ast, depth = 0) => {
   const makeIndent = count => `${'  '.repeat(count * 2)}`;
 
@@ -15,11 +17,12 @@ const renderDefault = (ast, depth = 0) => {
     added: elem => `${makeIndent(depth)}  + ${makeEnt(elem.keyName, elem.value)}`,
     deleted: elem => `${makeIndent(depth)}  - ${makeEnt(elem.keyName, elem.value)}`,
     unchanged: elem => `${makeIndent(depth)}    ${makeEnt(elem.keyName, elem.value)}`,
-    updated: elem => `${makeIndent(depth)}  - ${makeEnt(elem.keyName, elem.oldValue)}\n${makeIndent(depth)}  + ${makeEnt(elem.keyName, elem.newValue)}`,
+    updated: elem => [`${makeIndent(depth)}  - ${makeEnt(elem.keyName, elem.oldValue)}`,
+      `${makeIndent(depth)}  + ${makeEnt(elem.keyName, elem.newValue)}`],
     nested: elem => `${makeIndent(depth)}    ${elem.keyName}: ${renderDefault(elem.value, depth + 1)}`,
   };
 
-  const result = ast.map(node => propertyActions[node.type](node))
+  const result = fp.flatten(ast.map(node => propertyActions[node.type](node)))
     .join('\n');
   return `{\n${result}\n${makeIndent(depth)}}`;
 };
