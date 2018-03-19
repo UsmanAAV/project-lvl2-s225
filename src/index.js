@@ -41,7 +41,7 @@ export const makeAST = (objBefore, objAfter) => {
   return result;
 };
 
-const genDiff = (pathToOldConfig, pathToNewConfig, format) => {
+const genDiff = (pathToOldConfig, pathToNewConfig, format = 'stylish') => {
   const oldConfig = extractDataToObject(pathToOldConfig);
   const newConfig = extractDataToObject(pathToNewConfig);
 
