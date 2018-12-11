@@ -42,7 +42,6 @@
     "babel-plugin-transform-runtime": "*",
     "babel-preset-env": "*",
     "babel-preset-stage-0": "*",
-    "debug": "*",
     "eslint": "*",
     "eslint-config-airbnb-base": "*",
     "eslint-plugin-import": "*",
