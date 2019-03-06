@@ -14,10 +14,10 @@ const renderDefault = (ast, depth = 0) => {
   const makeEnt = (key, value) => `${key}: ${printValue(value)}`;
 
   const propertyActions = {
-    added: elem => `${makeIndent(depth)}  + ${makeEnt(elem.keyName, elem.value)}`,
+    added: elem => `${makeIndent(depth)}  + ${makeEnt(elem.keyName, elem.newValue)}`,
     deleted: elem => `${makeIndent(depth)}  - ${makeEnt(elem.keyName, elem.value)}`,
     unchanged: elem => `${makeIndent(depth)}    ${makeEnt(elem.keyName, elem.value)}`,
-    updated: elem => [`${makeIndent(depth)}  - ${makeEnt(elem.keyName, elem.oldValue)}`,
+    updated: elem => [`${makeIndent(depth)}  - ${makeEnt(elem.keyName, elem.value)}`,
       `${makeIndent(depth)}  + ${makeEnt(elem.keyName, elem.newValue)}`],
     nested: elem => `${makeIndent(depth)}    ${elem.keyName}: ${renderDefault(elem.value, depth + 1)}`,
   };
