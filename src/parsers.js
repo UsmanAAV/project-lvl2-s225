@@ -30,4 +30,4 @@ const getParser = (format = '') => {
   return parser;
 };
 
-export default extension => getParser(extension).parse;
+export default (extension) => getParser(extension).parse;

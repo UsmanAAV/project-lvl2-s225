@@ -16,4 +16,4 @@ const getRenderer = (format) => {
   return renderer;
 };
 
-export default format => getRenderer(format);
+export default (format) => getRenderer(format);
